@@ -28,6 +28,23 @@ site.config.json. Keep the provisioner's config shape: name, description, domain
 jamstacks.siteId/cdnUrl and optional provisioningId. Business data never goes there. Reuse the design's
 illustrations and palette rather than adding unrelated assets.
 
+### Soi Sabai file ownership
+
+- `content/menu.ts`: sections, dishes, prices (AUD cents), chilli levels 0–4, `adjustable`, diets,
+  allergens, `availability` and `isNew`. `validateMenu()` runs at import and in tests.
+- `content/lunch.ts`: Tuesday–Friday tickets and `lunchWindow`; `validateLunch()` checks dish references,
+  sold-out dishes, prices and that the window sits inside each day's hours.
+- `content/business.ts`: name, Thai name, contact details, address, getting-here lines, `hours`,
+  allergen and price notes, Contact copy.
+- Page copy lives in `app/page.tsx`, `app/menu/page.tsx`, `app/visit/page.tsx`, `app/contact/page.tsx`
+  and `app/not-found.tsx`.
+- Artwork lives in `components/art/` (hero scene, tiffin, chilli-o-meter, station motifs, tableware,
+  dividers, icons, 404). Shared steel and tile patterns are in `components/art/defs.tsx`, rendered
+  once in the layout. Art colours come from `.f-*`/`.st-*` classes in `app/tailwind.input.css`.
+- Browser-only state: `components/browser-marks.tsx` (today's hours row, reveal), `lunch-status.tsx`,
+  `menu-filter.tsx` and `open-badge.tsx`. Pure logic and its tests: `lib/lunch-status.ts`,
+  `lib/menu-filter.ts`, `lib/hours.ts`. `tests/contrast.test.ts` reads the CSS tokens.
+
 ## Styling: Tailwind CSS v4
 
 Use utilities in components. `app/tailwind.input.css` owns tokens, theme mappings, base styles, small

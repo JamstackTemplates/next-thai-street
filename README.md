@@ -1,69 +1,95 @@
-# JamstackTemplates Next.js starter
+# Soi Sabai: Thai street food
 
-The shared starter for Next.js templates in the `JamstackTemplates` organization. Its canonical home is
-`JamstackTemplates/template-next`, alongside the templates generated from it.
-It is not a gallery design or a published demo. Business content is sample content. No application code
-in a website created from this template depends on the starter checkout or the portal repository.
+A made-to-order street-food counter website for **Soi Sabai** (ซอยสบาย), a fictitious Thai kitchen at
+Queen Victoria Market, Melbourne. It is the `next-thai-street` sample in the Jamstacks gallery, built
+from the `JamstackTemplates/template-next` starter. Every business detail is sample content: replace
+it before publishing. The site is a self-contained Next.js static export; it does not depend on the
+starter checkout or the portal repository.
 
-## Build your website
-
-Start in the checkout of the repository GitHub created from `JamstackTemplates/template-next`. All
-starter files are already present. Local development requires Node 24 or later and npm.
-
-To build a new site, fill in `plan/PLAN.md`, then tell the coding agent **`Implement plan/PLAN.md`**.
-In Claude Code, `/write-plan <business description>` drafts the brief for you. For a gallery template,
-pass the table row: `/write-plan next-type-style | Business | Description | Form purpose`.
-After reviewing the finished site, run `/cleanup-plan` or delete `plan/` and `.claude/skills/` by hand
-to remove all initial build instructions.
-
-To preview locally, run `npm ci` and `npm run dev` from the repository root.
+Local development requires Node 24 or later and npm. Run `npm ci`, then `npm run dev` to preview.
 
 ## Pages
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Minimal content-driven home page and Organization JSON-LD |
-| `/contact/` | Hosted support form when configured; visible email alternative |
-| `/404.html` | Friendly static error page |
+| `/` | Hero with the lunch counter, the three kitchen stations, the chilli-o-meter scale, weekday lunch dockets, address and hours, and the group/catering/events enquiry band. Restaurant JSON-LD. |
+| `/menu/` | Full menu as laminated station cards, with the chilli-o-meter heat filter, a vegetarian & vegan toggle, the lunch dockets (`#lunch`) and the allergen key |
+| `/visit/` | Address, open-now badge, hours, map, getting here and how ordering works |
+| `/contact/` | Hosted enquiry form when configured; the email address is always visible |
+| `/404.html` | "Wrong soi · ทางตัน" dead-end lane |
 
 ## Make it yours
 
 | File | Owns |
 | --- | --- |
-| `content/business.ts` | Shared business name, contact details and starter sample copy |
-| `app/page.tsx`, `app/<route>/page.tsx` | Page composition and editable copy such as headings and calls to action |
-| `content/menu.ts` or `content/services.ts` (add when needed) | Industry-specific typed collections |
-| `site.config.json` | Public name, description, hostname, optional timeZone and Jamstacks integration |
-| `app/tailwind.input.css` | Theme tokens, utility mappings and small shared styles |
-| `components/site-header.tsx`, `site-footer.tsx` | Replaceable navigation and visual shell |
-| `lib/structured-data.ts` | Schema type/properties derived from real content |
+| `content/menu.ts` | Menu sections, dishes, prices, chilli levels, diets, allergens, sold-out and new flags |
+| `content/lunch.ts` | The four weekday lunch tickets and the lunch window |
+| `content/business.ts` | Name, Thai name, email, phone, address, getting-here lines, kitchen hours, allergen and price notes, Contact copy |
+| `app/page.tsx` | Home page copy in the order visitors see it (headings, station posters, buttons) |
+| `app/menu/page.tsx`, `app/visit/page.tsx`, `app/contact/page.tsx`, `app/not-found.tsx` | Each page's copy and section order |
+| `site.config.json` | Public name, description, domain, time zone and Jamstacks integration only |
+| `app/tailwind.input.css` | Colour tokens (light, automatic dark, explicit dark), bands, station colours, textures, motion, print |
+| `components/art/` | The SVG artwork: hero counter scene, tiffin carrier, chilli-o-meter scale, station motifs, tableware, counter dividers, icons, 404 art |
+| `components/home.tsx`, `menu-board.tsx`, `menu-bar.tsx`, `lunch-tickets.tsx`, `hours-board.tsx`, `visit.tsx` | Section layouts behind the page copy |
+| `components/site-header.tsx`, `site-footer.tsx`, `page-head.tsx` | Shopfront signboard header, soi-sign footer and signboard page heads |
+| `lib/structured-data.ts` | Restaurant schema derived from `content/business.ts` |
 | `app/sitemap.ts` | Public routes; update when adding a page |
 
-Edit page copy in the route file, for example `<Hero.Heading>Seasonal flowers</Hero.Heading>`
-in `app/page.tsx` for the Home page. The backing
-component owns the styling and interactions. Use typed fields for data the site needs to look up or
-reuse. For example, change `business.email` to update Contact. Rename in `business.name` and
-`site.config.json.name`. Add a typed core-content file for frequent owner edits: a food menu should use
-the existing sections/items/price/availability model; changes such as sold out, seasonal or a new section
-should be data edits with actionable content tests. Do not add business content to configuration: the
-Jamstacks provisioner replaces that file wholesale, possibly adding `provisioningId`.
+### Common edits
 
-## Appearance and optional local-business features
+Each of these is a one-field change, checked by `npm test`, which names the dish or ticket to fix:
 
-The starter uses system fonts, neutral Tailwind v4 tokens and the published `jamstacks` package's
-ThemeProvider, ThemeScript and DarkModeToggle. No font download or font licence file is needed for
-system fonts. Each designed template chooses and documents self-hosted font packages and their licences.
-Utilities live in components; colours originate in CSS tokens with light, automatic-dark and explicit-dark
-values plus `@theme inline` mappings. Keep the hosted form's primary fill dark enough for white text.
-Keyboard focus, reduced motion and print styles are included. The footer credit is yours to keep,
-reword or remove.
+- **Sold out today:** in `content/menu.ts`, set the dish's `availability: 'sold-out'`. It stays on the
+  menu, greyed with a "หมด · SOLD OUT" stamp. Set it back to `'available'` when it returns.
+- **New price:** change `priceCents` (AUD cents including GST, a multiple of 50, e.g. `1950` for $19.50).
+- **Hotter or milder:** change `chilli` (0 ไม่เผ็ด to 4 เผ็ดมากๆ) or `adjustable` (whether the kitchen can
+  move it one level). The filter, mini gauges and Home update automatically.
+- **New dish:** copy an item, give it a new unique `id` (lowercase, hyphens) and the right `sectionId`,
+  and add `isNew: true` for the new badge.
+- **This week's lunch special:** in `content/lunch.ts`, change that day's `dishId` (it must be an
+  available dish), `title`, `includes` and `priceCents` (below the dish price plus a salted lime soda).
+- **Hours:** edit `business.hours` in `content/business.ts`. Hours are same-day only; overnight
+  intervals fail validation. The lunch window must stay inside each ticket day's hours.
+- **Page copy:** edit the text between the component tags in the route file, for example
+  `<Hero.Heading>Wok-hot Thai street food, as fiery as you like.</Hero.Heading>` in `app/page.tsx`.
 
-For a business with visiting hours, add address/directions/hours to typed content, set the IANA `timeZone`
-in site.config.json and use optional `GoogleMap`, `TimeZoneNote` and `OpenBadge` components. GoogleMap
-accepts an address and descriptive title; map helpers need no key. `OpenBadge` accepts seven
-`OpeningHours` records, uses the business zone and refreshes each minute in the browser; static/no-JS
-output is neutral. Same-day intervals only: overnight hours fail validation and need a tested extension
-before use. The baseline home page does not load a map or assert opening hours.
+Rename the business in `business.name` and `site.config.json`'s `name`. Do not add business content to
+`site.config.json`: the Jamstacks provisioner replaces that file wholesale, possibly adding `provisioningId`.
+
+## Design
+
+"The made-to-order counter" (ร้านอาหารตามสั่ง): white kitchen wall tile, brushed stainless steel, shop-sign
+red with yellow Thai lettering, herb green, enamel-rim blue and blue-and-white Bangkok soi street signs.
+Dark mode is the counter after dark under the tube lights: blackened steel, warm lettering and a soft
+tube-light glow on the artwork. The signature element is the **chilli-o-meter**, a red enamel market
+scale (ตาชั่ง) used in Home's "Pick your heat" band, as the Menu filter and as the five-pod heat scale
+on every dish.
+
+Fonts are self-hosted from npm, both by Cadson Demak under the SIL Open Font License 1.1:
+
+- **Kanit** (`@fontsource/kanit`): shopfront signage, headings and prices
+- **Sarabun** (`@fontsource/sarabun`): body copy and Thai script
+
+All artwork is inline SVG in `components/art/`; there is no photography. `public/og.png` is the
+1200×630 social image composed from the same artwork.
+
+## Browser behaviour
+
+Static and no-JavaScript output stays neutral; the browser adds time and filter state:
+
+- **Open-now badge:** computed in `Australia/Melbourne` (from `site.config.json`) and refreshed every
+  minute. Without JavaScript it reads "Kitchen hours", and the hours table is always visible.
+- **Today's row** on hours boards and **today's lunch ticket** (lifted and punched, "On now · until 15:00"
+  during the lunch window) are marked in the browser only. Without JavaScript all tickets look the same
+  with "Lunch tickets run Tuesday to Friday, 11:30–15:00".
+- **Chilli-o-meter filter** on Menu: a radio group (any heat, 0–4) and a vegetarian & vegan toggle.
+  Dishes above the chosen heat are hidden; adjustable dishes one level hotter stay with "Ask for it a
+  level milder". The choice is kept in `?heat=` and `?veg=1`, and a live region announces the count.
+  Without JavaScript the controls are not shown and every dish is listed.
+- **Motion** (gauge needle swing, steam, flames, ticket swing, string-light twinkle) is disabled under
+  `prefers-reduced-motion`. Printing the Menu gives a plain two-column list.
+
+The `OpenBadge`, `TimeZoneNote` and `GoogleMap` helpers come from the starter. Map links need no key.
 
 ## Public configuration
 
@@ -116,8 +142,9 @@ PAGES_BASE_PATH=/preview PAGES_BASE_URL=https://owner.github.io/preview npm run 
 npm start -- --base /preview --port 3000
 ```
 
-Tests cover config/provisioner compatibility, embed state, content rules, optional opening hours,
-and structured-data escaping. Typecheck uses Next's generated route types.
+Tests cover config/provisioner compatibility, embed state, menu and lunch-ticket validation, kitchen
+hours and lunch status across Melbourne DST changes, the heat filter, WCAG contrast of the palette in
+both themes, copy rules (no bookings, online orders or payment) and structured-data escaping. Typecheck uses Next's generated route types.
 When changing the Contact integration, base paths or canonical URLs, check the exported HTML and
 sitemap. Verify both configured and unconfigured Contact with the corresponding build settings.
 Test light/dark at desktop and mobile widths, keyboard navigation, unknown routes, repeated Contact

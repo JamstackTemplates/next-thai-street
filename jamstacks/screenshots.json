@@ -1,0 +1,22 @@
+{
+  "templateId": "next-thai-street",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fullPage": false,
+  "captures": [
+    {
+      "mode": "light",
+      "sha256": "bfd1bcd251a658488d0bfc44d151ff0e0de95f76b88ba53475acc320be843c5a",
+      "file": "jamstacks/home-light.jpg",
+      "bytes": 250719
+    },
+    {
+      "mode": "dark",
+      "sha256": "8748b2e9ac426180711e120e797526b5a0570a564f79497311699c56b31109dc",
+      "file": "jamstacks/home-dark.jpg",
+      "bytes": 237533
+    }
+  ]
+}

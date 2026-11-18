@@ -1,0 +1,19 @@
+{
+  "name": "Thai street food",
+  "description": "A bright tuk-tuk-poster theme for Thai street-food kitchens: a wok, curry and noodle menu in Thai and English with a chilli-o-meter heat filter, weekday lunch-special tickets that light up at lunchtime, opening hours, location and a Jamstacks contact component for group tables, office catering and market-stall events.",
+  "tech": "next",
+  "type": "thai",
+  "style": "street",
+  "internal": false,
+  "components": [
+    "support-form"
+  ],
+  "configFile": "site.config.json",
+  "screenshots": {
+    "light": "jamstacks/home-light.jpg",
+    "dark": "jamstacks/home-dark.jpg",
+    "theme": {
+      "strategy": "media"
+    }
+  }
+}

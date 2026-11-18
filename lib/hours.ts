@@ -11,6 +11,21 @@ export interface OpeningHours {
 }
 const clock = /^([01]\d|2[0-3]):[0-5]\d$/;
 const minutes = (value: string) => Number(value.slice(0, 2)) * 60 + Number(value.slice(3));
+/** Minutes after local midnight for an HH:MM value. */
+export const toMinutes = minutes;
+
+/** The weekday and minutes after midnight in `timeZone`, or null when the zone is unset or invalid. */
+export function localTime(timeZone: string, now = new Date()): { day: Day; minutes: number } | null {
+  if (!timeZone) return null;
+  let parts: Intl.DateTimeFormatPart[];
+  try {
+    parts = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'long', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(now);
+  } catch { return null; }
+  const part = (type: string) => parts.find(entry => entry.type === type)?.value ?? '';
+  const day = part('weekday') as Day;
+  if (!DAYS.includes(day)) return null;
+  return { day, minutes: Number(part('hour')) * 60 + Number(part('minute')) };
+}
 export function validateHours(hours: readonly OpeningHours[]): void {
   for (const day of DAYS) {
     const matches = hours.filter(entry => entry.day === day);
@@ -28,14 +43,10 @@ export function openingLabel(hours: readonly OpeningHours[], timeZone: string, n
   const fallback = 'See opening hours';
   if (!timeZone) return fallback;
   validateHours(hours);
-  let parts: Intl.DateTimeFormatPart[];
-  try {
-    parts = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'long', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(now);
-  } catch { return fallback; }
-  const part = (type: string) => parts.find(entry => entry.type === type)?.value ?? '';
-  const index = DAYS.indexOf(part('weekday') as Day);
-  if (index < 0) return fallback;
-  const current = Number(part('hour')) * 60 + Number(part('minute'));
+  const local = localTime(timeZone, now);
+  if (!local) return fallback;
+  const index = DAYS.indexOf(local.day);
+  const current = local.minutes;
   const today = hours.find(entry => entry.day === DAYS[index])!;
   if (today.opens && today.closes && current >= minutes(today.opens) && current < minutes(today.closes)) return `Open now · until ${today.closes}`;
   for (let offset = 0; offset <= 7; offset++) {

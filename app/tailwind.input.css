@@ -1,65 +1,196 @@
+/* Soi Sabai: Bangkok night-market & street-stall counter (ร้านอาหารตามสั่ง) at Queen Victoria Market.
+   Tailwind CSS v4 plus this template's design system:
+   1. colour tokens (light, automatic dark, explicit dark)   2. theme mappings
+   3. base styles, warm paper grain, lantern glow & awning textures
+   4. shared pieces (.button, bands, signboard, menu cards, order dockets, soi sign)
+   5. illustration fills, gradients and motion   6. state from data attributes   7. reduced motion, forced-colors and print */
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ------------------------------------------------------------------
+   1. Colour tokens.
+   Light: Golden-hour Bangkok street stall — warm rice-paper cream, teakwood, lacquer vermilion,
+   pandan green, marigold gold and soi-sign enamel blue.
+   Dark: Night market (Talad Rot Fai) — deep aubergine-charcoal sky, glowing paper lanterns,
+   ember coral accents and dark lacquer timber.
+   ------------------------------------------------------------------ */
 :root {
-  --bg: #f7f8fa;
-  --surface: #ffffff;
-  --text: #172033;
-  --muted: #526078;
-  --accent: #2457a7;
-  --accent-ink: #2457a7;
+  --bg: #fbf2dc;            /* warm rice-paper cream */
+  --surface: #fffaf0;       /* menu sheet ivory */
+  --raised: #f2e0ba;        /* toasted bamboo / kraft */
+  --text: #1e1410;          /* charred wok ink */
+  --muted: #5d4332;         /* palm sugar brown */
+  --line: #d6bd96;          /* rattan rule */
+  --rule: #2b1b14;
+  --accent: #b81818;        /* lacquer vermilion: white text 6.60:1 */
+  --accent-hover: #941212;
+  --accent-ink: #9c1616;    /* links and prices on parchment & ivory */
   --on-accent: #ffffff;
-  --line: #c7cfdb;
-  --focus: #2457a7;
+  --sign-yellow: #ffd23f;   /* marigold & shop-sign gold */
+  --green: #0d4d32;         /* pandan & kaffir lime */
+  --blue: #183d7d;          /* Bangkok soi enamel blue */
+  --focus: #183d7d;
+  --steel-1: #e5c98b;       /* warm brushed brass highlight */
+  --steel-2: #c9a55c;       /* brushed brass */
+  --steel-3: #8c6928;       /* aged brass edge */
+  --grout: rgba(93, 67, 50, .06);
+  --brush: rgba(255, 250, 232, .45);
+  --sky-glow-1: rgba(255, 198, 72, .32);
+  --sky-glow-2: rgba(184, 24, 24, .10);
+  --card-shadow: 0 2px 0 rgba(30, 20, 16, .12), 0 18px 34px -18px rgba(30, 20, 16, .48);
+  --art-glow: drop-shadow(0 10px 18px rgba(30, 20, 16, .16));
   --map-filter: none;
+  --scrollbar-track: #f2e0ba;
+  --scrollbar-thumb: #8c6928;
+
+  /* Bands: each sets its own text colours so contrast holds on it. */
+  --band-sign-bg: #9c1816;   --band-sign-fg: #fff9ee;   --band-sign-muted: #ffdfd4;
+  --band-green-bg: #0d4d32;  --band-green-fg: #fff9ee;  --band-green-muted: #d5f0e0;
+  --band-steel-bg: #f0deb6;  --band-steel-fg: #211510;  --band-steel-muted: #563e2e;
+  --band-ink-bg: #18100f;    --band-ink-fg: #fbf1dc;    --band-ink-muted: #d8c4a6;
+  --band-yellow-bg: #f5be18; --band-yellow-fg: #211510; --band-yellow-muted: #47311f;
+  --header-bg: #221210;      --header-fg: #fff6e3;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
- :root:not(.light) {
-  --bg: #141923;
-  --surface: #1e2633;
-  --text: #f1f5fa;
-  --muted: #b5c2d5;
-  --accent: #2457a7;
-  --accent-ink: #a9cbff;
-  --on-accent: #ffffff;
-  --line: #61708a;
-  --focus: #a9cbff;
-  --map-filter: grayscale(.4) brightness(.8);
-  color-scheme: dark;
- }
+  :root:not(.light) {
+    --bg: #120d15;
+    --surface: #1e1522;
+    --raised: #2c1f31;
+    --text: #fdf2dc;
+    --muted: #cbb89c;
+    --line: #49364f;
+    --rule: #7c6282;
+    --accent: #c21d1a;      /* white text 6.03:1 */
+    --accent-hover: #a31614;
+    --accent-ink: #ff9b73;
+    --on-accent: #ffffff;
+    --sign-yellow: #ffd23f;
+    --green: #4ec483;
+    --blue: #8cb2f2;
+    --focus: #ffd23f;
+    --steel-1: #5a4630;
+    --steel-2: #3b2c1d;
+    --steel-3: #8c6e3b;
+    --grout: rgba(255, 224, 160, .035);
+    --brush: rgba(255, 220, 140, .08);
+    --sky-glow-1: rgba(255, 168, 56, .20);
+    --sky-glow-2: rgba(214, 42, 42, .16);
+    --card-shadow: 0 0 0 1px rgba(255, 214, 150, .07), 0 22px 36px -16px rgba(0, 0, 0, .85);
+    --art-glow: drop-shadow(0 0 .85rem rgba(255, 186, 86, .22));
+    --map-filter: grayscale(.25) brightness(.82) contrast(1.06);
+    --scrollbar-track: #1e1522;
+    --scrollbar-thumb: #8c6e3b;
+    --band-sign-bg: #871414;   --band-sign-fg: #fff6e8;   --band-sign-muted: #ffd9cf;
+    --band-green-bg: #0b422b;  --band-green-fg: #f4fbf6;  --band-green-muted: #cdebd9;
+    --band-steel-bg: #241926;  --band-steel-fg: #fdf2dc;  --band-steel-muted: #cebba0;
+    --band-ink-bg: #0b080d;    --band-ink-fg: #fdf2dc;    --band-ink-muted: #cbb89c;
+    --band-yellow-bg: #e6ab00; --band-yellow-fg: #1e1410; --band-yellow-muted: #3d291a;
+    --header-bg: #180e16;      --header-fg: #fdf2dc;
+    color-scheme: dark;
+  }
 }
 :root.dark {
-  --bg: #141923;
-  --surface: #1e2633;
-  --text: #f1f5fa;
-  --muted: #b5c2d5;
-  --accent: #2457a7;
-  --accent-ink: #a9cbff;
+  --bg: #120d15;
+  --surface: #1e1522;
+  --raised: #2c1f31;
+  --text: #fdf2dc;
+  --muted: #cbb89c;
+  --line: #49364f;
+  --rule: #7c6282;
+  --accent: #c21d1a;
+  --accent-hover: #a31614;
+  --accent-ink: #ff9b73;
   --on-accent: #ffffff;
-  --line: #61708a;
-  --focus: #a9cbff;
-  --map-filter: grayscale(.4) brightness(.8);
+  --sign-yellow: #ffd23f;
+  --green: #4ec483;
+  --blue: #8cb2f2;
+  --focus: #ffd23f;
+  --steel-1: #5a4630;
+  --steel-2: #3b2c1d;
+  --steel-3: #8c6e3b;
+  --grout: rgba(255, 224, 160, .035);
+  --brush: rgba(255, 220, 140, .08);
+  --sky-glow-1: rgba(255, 168, 56, .20);
+  --sky-glow-2: rgba(214, 42, 42, .16);
+  --card-shadow: 0 0 0 1px rgba(255, 214, 150, .07), 0 22px 36px -16px rgba(0, 0, 0, .85);
+  --art-glow: drop-shadow(0 0 .85rem rgba(255, 186, 86, .22));
+  --map-filter: grayscale(.25) brightness(.82) contrast(1.06);
+  --scrollbar-track: #1e1522;
+  --scrollbar-thumb: #8c6e3b;
+  --band-sign-bg: #871414;   --band-sign-fg: #fff6e8;   --band-sign-muted: #ffd9cf;
+  --band-green-bg: #0b422b;  --band-green-fg: #f4fbf6;  --band-green-muted: #cdebd9;
+  --band-steel-bg: #241926;  --band-steel-fg: #fdf2dc;  --band-steel-muted: #cebba0;
+  --band-ink-bg: #0b080d;    --band-ink-fg: #fdf2dc;    --band-ink-muted: #cbb89c;
+  --band-yellow-bg: #e6ab00; --band-yellow-fg: #1e1410; --band-yellow-muted: #3d291a;
+  --header-bg: #180e16;      --header-fg: #fdf2dc;
   color-scheme: dark;
 }
 
+/* Illustration inks (food, tableware, teak, lacquer): consistent character across themes. */
+:root {
+  --ink-ink: #241712;
+  --ink-paper: #fffaf0;
+  --ink-red: #c41818;
+  --ink-yellow: #ffc917;
+  --ink-green: #0d5e3a;
+  --ink-leaf: #4f9a34;
+  --ink-blue: #183d7d;
+  --ink-steel: #dfc284;
+  --ink-steel-dark: #a6823e;
+  --ink-teak: #8a5228;
+  --ink-teak-dark: #5c3315;
+  --ink-curry-green: #8aa83a;
+  --ink-curry-red: #c8552a;
+  --ink-massaman: #a8692c;
+  --ink-rice: #f8f3e3;
+  --ink-egg: #ffd34d;
+  --ink-satay: #a5531f;
+  --ink-noodle: #f2d79a;
+  --ink-broth: #914920;
+  --ink-tea: #e67e22;
+  --ink-mango: #ffb81f;
+  --ink-clay: #b4532a;
+  --ink-flame: #f5841f;
+  --ink-shadow: rgba(30, 20, 16, .22);
+  /* Heat scale, 0 to 4 */
+  --heat-0: #2f8524;
+  --heat-1: #9dc21b;
+  --heat-2: #f7be00;
+  --heat-3: #ef6c12;
+  --heat-4: #c81912;
+}
+
+/* ------------------------------------------------------------------
+   2. Theme
+   ------------------------------------------------------------------ */
 @theme {
   --color-*: initial;
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --radius-ui: .375rem;
+  --color-white: #ffffff;
+  --font-sans: 'Sarabun', 'Noto Sans Thai', system-ui, sans-serif;
+  --font-display: 'Kanit', 'Sarabun', 'Noto Sans Thai', system-ui, sans-serif;
+  --radius-ui: .45rem;
 }
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
+  --color-raised: var(--raised);
   --color-ink: var(--text);
   --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-rule: var(--rule);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-on-accent: var(--on-accent);
-  --color-line: var(--line);
+  --color-sign-yellow: var(--sign-yellow);
+  --color-green: var(--green);
+  --color-blue: var(--blue);
+  --color-band: var(--band-bg);
+  --color-on-band: var(--band-fg);
+  --color-band-muted: var(--band-muted);
 }
 :root {
-  --measure: 42rem;
+  --measure: 40rem;
   --jamstacks-font-family: var(--font-sans);
   --jamstacks-color-text: var(--text);
   --jamstacks-color-background: var(--surface);
@@ -71,42 +202,329 @@
   --jamstacks-control-height: 2.75rem;
   --jamstacks-spacing: 1rem;
   --jamstacks-form-max-width: 40rem;
-  --jamstacks-toggle-color: var(--text);
-  --jamstacks-toggle-dark-color: var(--text);
-  --jamstacks-toggle-border: var(--line);
-  --jamstacks-toggle-background: var(--surface);
-  --jamstacks-toggle-dark-background: var(--surface);
-  --jamstacks-toggle-focus-color: var(--focus);
+  --jamstacks-toggle-color: var(--header-fg);
+  --jamstacks-toggle-dark-color: var(--header-fg);
+  --jamstacks-toggle-border: color-mix(in oklab, var(--header-fg) 45%, transparent);
+  --jamstacks-toggle-background: transparent;
+  --jamstacks-toggle-dark-background: transparent;
+  --jamstacks-toggle-focus-color: var(--sign-yellow);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
+
+/* ------------------------------------------------------------------
+   3. Base and atmospheric textures
+   ------------------------------------------------------------------ */
 @layer base {
-  html { background: var(--bg); color: var(--text); font-family: var(--font-sans); scroll-padding-top: 1.5rem; }
-  body { margin: 0; line-height: 1.6; }
-  main { min-height: 65vh; }
-  a { text-underline-offset: .2em; }
-  a:hover { text-decoration: underline; }
-  button { cursor: pointer; }
-  :focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
-  [aria-current="page"] { text-decoration: underline; }
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+    accent-color: var(--accent);
+  }
+  body {
+    margin: 0;
+    line-height: 1.55;
+    font-size: 1.0625rem;
+    background-color: var(--bg);
+    /* Subtle woven bamboo & rice-paper crosshatch instead of stark tile */
+    background-image:
+      repeating-linear-gradient(45deg, var(--grout) 0 1px, transparent 1px 18px),
+      repeating-linear-gradient(-45deg, var(--grout) 0 1px, transparent 1px 18px);
+  }
+  main { min-height: 60vh; display: block; }
+  main:focus { outline: none; }
+  h1, h2, h3 { line-height: 1.1; margin: 0; text-wrap: balance; }
+  p { margin: 0; text-wrap: pretty; }
+  a { color: inherit; text-underline-offset: .22em; text-decoration-thickness: .09em; }
+  a:hover { text-decoration-thickness: .15em; }
+  button { cursor: pointer; font: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
+  abbr[title] { text-decoration: none; }
+  ::selection { background: var(--sign-yellow); color: var(--ink-ink); }
 }
-@utility wrap { width: min(100% - 2rem, 72rem); margin-inline: auto; }
+
+@utility wrap { width: min(100% - 2rem, 78rem); margin-inline: auto; }
+@utility font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -.005em; }
+@utility font-sign { font-family: var(--font-display); font-weight: 800; letter-spacing: -.01em; }
+
+/* Warm brushed brass surface (replaces cold sterile steel). */
+@utility brushed {
+  background-color: var(--steel-2);
+  background-image:
+    repeating-linear-gradient(0deg, var(--brush) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--steel-1), var(--steel-2) 55%, var(--steel-1));
+}
+
+/* Warm atmospheric dusk/night-market halo for hero and page heads. */
+@utility hero-sky {
+  isolation: isolate;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(48rem 34rem at 76% 42%, var(--sky-glow-1), transparent 72%),
+    radial-gradient(36rem 26rem at 18% 18%, var(--sky-glow-2), transparent 70%),
+    repeating-linear-gradient(45deg, var(--grout) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-45deg, var(--grout) 0 1px, transparent 1px 22px);
+}
+
+/* Warm paper-and-lattice backdrop for inner page heads. */
+@utility pagehead-bg {
+  isolation: isolate;
+  background-color: var(--raised);
+  background-image:
+    radial-gradient(36rem 22rem at 82% 45%, var(--sky-glow-1), transparent 70%),
+    radial-gradient(28rem 20rem at 12% 20%, var(--sky-glow-2), transparent 72%),
+    repeating-linear-gradient(45deg, var(--grout) 0 1px, transparent 1px 16px),
+    repeating-linear-gradient(-45deg, var(--grout) 0 1px, transparent 1px 16px);
+}
+
+/* ------------------------------------------------------------------
+   4. Shared pieces
+   ------------------------------------------------------------------ */
 @layer components {
-  .button { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; padding: .6rem 1.2rem; border: 1px solid var(--accent); border-radius: var(--radius-ui); background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none; }
-  .button:hover { text-decoration: underline; }
-  .button-quiet { background: var(--surface); color: var(--accent-ink); border-color: var(--line); }
-  .text-link { color: var(--accent-ink); text-decoration: underline; }
-  .eyebrow { font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-  .skip-link { position: absolute; left: 1rem; top: -8rem; padding: .75rem; z-index: 200; background: var(--surface); }
+  .band-sign   { --band-bg: var(--band-sign-bg);   --band-fg: var(--band-sign-fg);   --band-muted: var(--band-sign-muted); }
+  .band-green  { --band-bg: var(--band-green-bg);  --band-fg: var(--band-green-fg);  --band-muted: var(--band-green-muted); }
+  .band-steel  { --band-bg: var(--band-steel-bg);  --band-fg: var(--band-steel-fg);  --band-muted: var(--band-steel-muted); }
+  .band-ink    { --band-bg: var(--band-ink-bg);    --band-fg: var(--band-ink-fg);    --band-muted: var(--band-ink-muted); }
+  .band-yellow { --band-bg: var(--band-yellow-bg); --band-fg: var(--band-yellow-fg); --band-muted: var(--band-yellow-muted); }
+
+  .band-sign, .band-green, .band-steel, .band-ink, .band-yellow {
+    background-color: var(--band-bg);
+    color: var(--band-fg);
+  }
+  .band-ink {
+    background-image:
+      radial-gradient(44rem 24rem at 22% 18%, rgba(210, 62, 24, .22), transparent 72%),
+      radial-gradient(38rem 24rem at 82% 72%, rgba(255, 190, 58, .15), transparent 70%),
+      radial-gradient(32rem 22rem at 52% 48%, rgba(168, 72, 24, .12), transparent 72%),
+      repeating-linear-gradient(45deg, rgba(255, 210, 110, .045) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(-45deg, rgba(255, 210, 110, .045) 0 1px, transparent 1px 28px);
+  }
+  .band-green {
+    background-image:
+      radial-gradient(42rem 28rem at 25% 50%, rgba(255, 208, 64, .12), transparent 70%),
+      repeating-linear-gradient(135deg, rgba(255, 255, 255, .025) 0 2px, transparent 2px 18px);
+  }
+  .band-steel {
+    background-image:
+      radial-gradient(46rem 20rem at 50% 0%, rgba(255, 210, 80, .14), transparent 75%),
+      repeating-linear-gradient(45deg, rgba(93, 67, 50, .035) 0 1px, transparent 1px 16px);
+  }
+  .band-sign {
+    background-image:
+      radial-gradient(36rem 24rem at 85% 50%, rgba(255, 202, 56, .18), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, .06) 0 28px, transparent 28px 56px);
+  }
+
+  /* Tactile lacquer button with warm bevel and pressed lower edge. */
+  .button {
+    --btn-bg: var(--accent); --btn-hover: var(--accent-hover); --btn-fg: var(--on-accent);
+    display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+    min-block-size: 3rem; padding: .7rem 1.5rem .8rem; border: 2px solid color-mix(in oklab, var(--ink-ink) 28%, transparent);
+    border-radius: .5rem; background: var(--btn-bg); color: var(--btn-fg);
+    font-family: var(--font-display); font-weight: 700; font-size: 1.08rem; line-height: 1.15;
+    text-decoration: none;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), inset 0 -4px 0 rgba(0, 0, 0, .28), 0 8px 18px -8px rgba(0, 0, 0, .55);
+    transition: background-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .button:hover { background: var(--btn-hover); text-decoration: none; transform: translateY(-1px); }
+  .button:active { transform: translateY(2px); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .28); }
+  .button-yellow { --btn-bg: var(--sign-yellow); --btn-hover: #ffe066; --btn-fg: var(--ink-ink); }
+  .button-quiet {
+    min-block-size: 2.75rem; padding: .55rem 1rem; border: 2px solid currentColor; border-radius: .45rem; background: transparent;
+    color: inherit; font-weight: 700; box-shadow: none; font-family: var(--font-sans);
+  }
+  .button-quiet:hover { background: color-mix(in oklab, currentColor 12%, transparent); transform: none; }
+  .text-link { color: var(--accent-ink); text-decoration: underline; font-weight: 700; }
+
+  .skip-link { position: absolute; left: 1rem; top: -8rem; z-index: 200; padding: .75rem 1rem; border-radius: .45rem; background: var(--sign-yellow); color: var(--ink-ink); font-weight: 700; }
   .skip-link:focus { top: 1rem; }
+
+  /* Printed, laminated street-stall menu placard with double inner frame. */
+  .menu-card {
+    position: relative;
+    border-radius: .65rem;
+    background-color: var(--surface);
+    border: 1.5px solid color-mix(in oklab, var(--line) 80%, var(--ink-ink) 20%);
+    box-shadow: var(--card-shadow);
+  }
+  /* Warm brass & teak panel for hours and contact form. */
+  .steel-panel {
+    position: relative;
+    border-radius: .65rem;
+    color: var(--text);
+    border: 2px solid var(--steel-3);
+    box-shadow: inset 0 1px 0 rgba(255, 248, 220, .55), inset 0 -3px 0 rgba(30, 20, 16, .18), var(--card-shadow);
+  }
+  /* Bangkok shopfront lightbox signboard: lacquer red framed in brass & warm gold. */
+  .signboard {
+    position: relative;
+    border-radius: .5rem;
+    background: linear-gradient(180deg, #b81818, #941212);
+    color: #fffaf0;
+    border: 2px solid #ffd23f;
+    box-shadow: 0 0 0 4px #241712, 0 0 0 6px var(--steel-2), var(--card-shadow);
+  }
+  /* Bangkok soi street sign: deep enamel blue plate with crisp double white border & rivets. */
+  .soi-sign {
+    position: relative;
+    border-radius: .6rem;
+    background: linear-gradient(180deg, #1d468f, #15356e);
+    color: #fff;
+    padding: 1.25rem 1.4rem;
+    box-shadow: inset 0 0 0 6px #173a78, inset 0 0 0 9px #fffaf0, 0 2px 0 #0d2147, var(--card-shadow);
+  }
+
+  /* Prices: bold stall-menu red with tabular numerals. */
+  .price { font-family: var(--font-display); font-weight: 800; font-variant-numeric: tabular-nums; color: var(--price, var(--accent-ink)); line-height: 1; white-space: nowrap; }
+
+  /* Allergen stamp. */
+  .stamp {
+    display: inline-grid; place-items: center; min-width: 1.65rem; min-height: 1.55rem; padding: 0 .3rem;
+    border: 1.5px solid currentColor; border-radius: .25rem; font-size: .72rem; font-weight: 700; letter-spacing: .02em; line-height: 1;
+  }
+
+  /* Order docket clipped to the brass kitchen ticket rail. */
+  .docket {
+    position: relative; display: grid; grid-template-rows: auto 1fr; color: var(--ink-ink);
+    background-color: var(--ink-paper);
+    background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(93, 67, 50, .06) 27px 28px);
+    border-radius: 0 0 .35rem .35rem; padding-top: .5rem;
+    box-shadow: 0 1px 0 rgba(30, 20, 16, .08), 0 18px 26px -16px rgba(30, 20, 16, .58);
+    /* perforated top edge */
+    -webkit-mask: radial-gradient(circle .32rem at 50% 0, transparent 97%, #000) 0 0 / .9rem 100% repeat-x;
+            mask: radial-gradient(circle .32rem at 50% 0, transparent 97%, #000) 0 0 / .9rem 100% repeat-x;
+    transform: translateY(var(--drop, 0)); transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .docket__head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: .75rem;
+    padding: .65rem 1rem .55rem;
+    background: color-mix(in oklab, var(--ink-yellow) 24%, var(--ink-paper));
+    border-bottom: 1.5px dashed rgba(36, 23, 18, .4);
+  }
+  .docket__body { padding: .9rem 1rem 1.15rem; display: grid; gap: .45rem; align-content: start; }
+  .docket:hover, .docket:focus-within { transform: translateY(calc(var(--drop, 0px) + 5px)); }
+  .docket__on { display: none; }
+
+  /* Hours rows. */
+  .hours-row { display: flex; justify-content: space-between; gap: 1rem; padding: .48rem .65rem; border-radius: .35rem; }
+  .hours-row + .hours-row { border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent); }
+
+  /* Menu section colours: rich Thai stall colour coding (WCAG AA verified). */
+  .station { --station-bg: #f5be18; --station-fg: #1e1410; --station-muted: #47311f; }
+  .station-snacks { --station-bg: #f5be18; --station-fg: #1e1410; --station-muted: #47311f; }
+  .station-wok { --station-bg: #b81818; --station-fg: #ffffff; --station-muted: #ffe0d6; }
+  .station-curry { --station-bg: #0d4d32; --station-fg: #ffffff; --station-muted: #d5f0e0; }
+  .station-noodles { --station-bg: #183d7d; --station-fg: #ffffff; --station-muted: #dce6fa; }
+  .station-sweets-drinks { --station-bg: #a83814; --station-fg: #ffffff; --station-muted: #ffeadb; }
+
+  /* Dish rows. */
+  .leader { flex: 1; min-width: 1.5rem; border-bottom: 2px dotted currentColor; opacity: .35; transform: translateY(-.4rem); }
+  .dish[data-soldout='true'] .dish__text { opacity: .52; }
+  .sold-stamp {
+    position: absolute; left: 58%; top: 50%; transform: translate(-50%, -50%) rotate(-8deg); padding: .18rem .75rem;
+    border: 3px double var(--accent); border-radius: .35rem; color: var(--accent); background: color-mix(in oklab, var(--surface) 88%, transparent);
+    font-family: var(--font-display); font-weight: 800; font-size: 1rem; letter-spacing: .02em; white-space: nowrap; pointer-events: none;
+  }
+  .new-tag {
+    display: inline-flex; align-items: center; padding: .08rem .58rem; border-radius: 999px; background: var(--sign-yellow); color: var(--ink-ink);
+    border: 1.5px solid var(--ink-ink);
+    font-family: var(--font-display); font-weight: 700; font-size: .78rem; line-height: 1.45; flex: none; align-self: center;
+  }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: .4rem; min-block-size: 2.5rem; padding: .35rem .95rem;
+    border: 2px solid color-mix(in oklab, currentColor 72%, transparent);
+    border-radius: 999px; font-weight: 700; font-size: .95rem; white-space: nowrap; text-decoration: none;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .chip:hover { background: color-mix(in oklab, currentColor 11%, transparent); border-color: currentColor; }
 }
-.map iframe { width: 100%; min-height: 20rem; border: 0; filter: var(--map-filter); }
+
+/* ------------------------------------------------------------------
+   5. Illustrations: rich layered street-stall art with warm shadows & motion.
+   ------------------------------------------------------------------ */
+.art { overflow: visible; filter: var(--art-glow); }
+.art.art-clip { overflow: hidden; }
+.art .s { stroke: var(--ink-ink); stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.art .s2 { stroke: var(--ink-ink); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.art .s4 { stroke: var(--ink-ink); stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+.art .nf { fill: none; }
+.f-ink { fill: var(--ink-ink); } .f-paper { fill: var(--ink-paper); } .f-red { fill: var(--ink-red); } .f-yellow { fill: var(--ink-yellow); }
+.f-green { fill: var(--ink-green); } .f-leaf { fill: var(--ink-leaf); } .f-blue { fill: var(--ink-blue); } .f-steel { fill: var(--ink-steel); }
+.f-steel-dark { fill: var(--ink-steel-dark); } .f-curry-green { fill: var(--ink-curry-green); } .f-curry-red { fill: var(--ink-curry-red); }
+.f-massaman { fill: var(--ink-massaman); } .f-rice { fill: var(--ink-rice); } .f-egg { fill: var(--ink-egg); } .f-satay { fill: var(--ink-satay); }
+.f-noodle { fill: var(--ink-noodle); } .f-broth { fill: var(--ink-broth); } .f-tea { fill: var(--ink-tea); } .f-mango { fill: var(--ink-mango); }
+.f-clay { fill: var(--ink-clay); } .f-flame { fill: var(--ink-flame); } .f-shadow { fill: var(--ink-shadow); } .f-white { fill: #fff; }
+.st-paper { stroke: var(--ink-paper); } .st-red { stroke: var(--ink-red); } .st-yellow { stroke: var(--ink-yellow); } .st-green { stroke: var(--ink-green); }
+.st-blue { stroke: var(--ink-blue); } .st-noodle { stroke: var(--ink-noodle); } .st-steel { stroke: var(--ink-steel); } .st-leaf { stroke: var(--ink-leaf); }
+.heat-0 { fill: var(--heat-0); } .heat-1 { fill: var(--heat-1); } .heat-2 { fill: var(--heat-2); } .heat-3 { fill: var(--heat-3); } .heat-4 { fill: var(--heat-4); }
+.art-sign { font-family: var(--font-display); font-weight: 800; }
+.art-text { font-family: var(--font-display); font-weight: 600; }
+
+/* Motion (disabled under reduced motion below). */
+@keyframes steam { 0% { transform: translateY(6px); opacity: 0; } 30% { opacity: .82; } 100% { transform: translateY(-18px); opacity: 0; } }
+.steam { animation: steam 3.8s ease-in-out infinite; transform-box: fill-box; }
+.steam:nth-of-type(2) { animation-delay: 1.25s; } .steam:nth-of-type(3) { animation-delay: 2.5s; }
+@keyframes flicker { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.08) skewX(-2.5deg); } }
+.flame { animation: flicker .85s ease-in-out infinite; transform-origin: 50% 100%; transform-box: fill-box; }
+@keyframes lantern-sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+.lantern { animation: lantern-sway 5.2s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 0%; }
+.lantern:nth-of-type(2) { animation-delay: 1.1s; }
+.lantern:nth-of-type(3) { animation-delay: 2.3s; }
+@keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: .62; } }
+.bulb-twinkle { animation: twinkle 3.6s ease-in-out infinite; }
+.bulb-twinkle:nth-of-type(odd) { animation-delay: 1.4s; }
+
+/* Heat scale needle: rotates to --needle; swings in when scrolled into view. */
+.gauge-needle { transform-box: view-box; transform-origin: 160px 148px; transform: rotate(var(--needle, 90deg)); transition: transform .8s cubic-bezier(.34, 1.5, .5, 1); }
+@keyframes needle-in { from { transform: rotate(0deg); } }
+[data-inview='true'] .gauge-needle--sweep { animation: needle-in 1.1s cubic-bezier(.34, 1.45, .5, 1) both; }
+
+/* ------------------------------------------------------------------
+   6. State from data attributes (set in the browser only)
+   ------------------------------------------------------------------ */
+[data-today='true'].hours-row { background: var(--sign-yellow); color: var(--ink-ink); font-weight: 700; }
+.docket[data-today='true'] { --drop: 1.25rem !important; box-shadow: 0 0 0 3px var(--sign-yellow), 0 24px 28px -16px rgba(0, 0, 0, .65); }
+.docket[data-today='true'] .docket__on { display: inline-flex; }
+.dish [data-milder-note] { display: none; }
+.dish[data-milder='true'] [data-milder-note] { display: inline-flex; }
+.map iframe { display: block; width: 100%; min-height: 22rem; border: 0; filter: var(--map-filter); }
 .enquiry__host { display: block; }
 .enquiry__status { margin-top: 1rem; color: var(--muted); }
-.enquiry[data-state="present"] > .enquiry__status { display: none; }
+.enquiry[data-state='present'] > .enquiry__status { display: none; }
+
+/* Horizontal scrollers (dockets, chips) */
+.scroller { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; padding: 0 .25rem 2rem; }
+.scroller > * { scroll-snap-align: start; flex: none; }
+@media (min-width: 64rem) {
+  .scroller.scroller-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; }
+  .scroller.scroller-grid > * { width: auto; }
+}
+
+/* ------------------------------------------------------------------
+   7. Reduced motion, forced colors and print
+   ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+@media (forced-colors: active) {
+  .menu-card, .steel-panel, .signboard, .soi-sign, .docket, .button, .chip, .stamp {
+    border: 2px solid ButtonText;
+    box-shadow: none;
+  }
+  :focus-visible { outline: 3px solid Highlight; }
+}
 @media print {
-  nav, .skip-link, .enquiry, button { display: none !important; }
-  html { background: white; color: black; }
-  a { color: inherit; }
+  body { background: #fff !important; color: #000 !important; font-size: 11pt; }
+  nav, .skip-link, .enquiry, button, .no-print, .art, svg[aria-hidden='true'] { display: none !important; }
+  .band-sign, .band-green, .band-steel, .band-ink, .band-yellow, .station, .menu-card, .steel-panel, .signboard, .soi-sign, .brushed {
+    background: #fff !important; color: #000 !important; box-shadow: none !important;
+  }
+  .price { color: #000; }
+  .print-columns { columns: 2; column-gap: 2rem; }
+  .print-columns li { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+  .docket { -webkit-mask: none; mask: none; transform: none; }
 }
